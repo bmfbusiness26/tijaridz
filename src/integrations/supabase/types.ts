@@ -14,16 +14,306 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activation_codes: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          duration_months: number
+          invoice_limit: number | null
+          monthly_contract_limit: number
+          plan: string
+          used_at: string | null
+          used_by: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          duration_months?: number
+          invoice_limit?: number | null
+          monthly_contract_limit?: number
+          plan: string
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          duration_months?: number
+          invoice_limit?: number | null
+          monthly_contract_limit?: number
+          plan?: string
+          used_at?: string | null
+          used_by?: string | null
+        }
+        Relationships: []
+      }
+      calculations: {
+        Row: {
+          created_at: string
+          id: string
+          inputs: Json
+          label: string | null
+          results: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          inputs?: Json
+          label?: string | null
+          results?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          inputs?: Json
+          label?: string | null
+          results?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      contracts: {
+        Row: {
+          analysis: string | null
+          created_at: string
+          id: string
+          name: string
+          risk_level: string | null
+          source_text: string | null
+          user_id: string
+        }
+        Insert: {
+          analysis?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          risk_level?: string | null
+          source_text?: string | null
+          user_id: string
+        }
+        Update: {
+          analysis?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          risk_level?: string | null
+          source_text?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      exchange_rates: {
+        Row: {
+          currency: string
+          market_rate: number
+          official_rate: number
+          updated_at: string
+        }
+        Insert: {
+          currency: string
+          market_rate: number
+          official_rate: number
+          updated_at?: string
+        }
+        Update: {
+          currency?: string
+          market_rate?: number
+          official_rate?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      invoices: {
+        Row: {
+          amount: number
+          client_name: string
+          client_nif: string | null
+          created_at: string
+          currency: string
+          description: string
+          id: string
+          invoice_date: string
+          number: string
+          tva_rate: number
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          client_name: string
+          client_nif?: string | null
+          created_at?: string
+          currency?: string
+          description: string
+          id?: string
+          invoice_date?: string
+          number: string
+          tva_rate?: number
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          client_name?: string
+          client_nif?: string | null
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          invoice_date?: string
+          number?: string
+          tva_rate?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payment_receipts: {
+        Row: {
+          admin_note: string | null
+          amount: number | null
+          created_at: string
+          id: string
+          plan: string
+          status: string
+          storage_path: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_note?: string | null
+          amount?: number | null
+          created_at?: string
+          id?: string
+          plan: string
+          status?: string
+          storage_path: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_note?: string | null
+          amount?: number | null
+          created_at?: string
+          id?: string
+          plan?: string
+          status?: string
+          storage_path?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          company_address: string | null
+          company_name: string | null
+          company_nif: string | null
+          company_phone: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          lang: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_address?: string | null
+          company_name?: string | null
+          company_nif?: string | null
+          company_phone?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          lang?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_address?: string | null
+          company_name?: string | null
+          company_nif?: string | null
+          company_phone?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          lang?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          invoice_limit: number | null
+          monthly_contract_limit: number
+          plan: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          invoice_limit?: number | null
+          monthly_contract_limit?: number
+          plan?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          invoice_limit?: number | null
+          monthly_contract_limit?: number
+          plan?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +440,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
