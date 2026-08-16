@@ -11,6 +11,11 @@ import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, formatDzd, toNumber } from "@/lib/format";
 
+function profitOf(results: unknown) {
+  const value = (results as { profit?: number } | null)?.profit;
+  return typeof value === "number" ? value : 0;
+}
+
 export const Route = createFileRoute("/calculator")({
   head: () => ({
     meta: [
@@ -58,11 +63,7 @@ function CalculatorPage() {
     const { error } = await supabase.from("calculations").insert({
       user_id: user.id,
       inputs: f,
-      total_cost: r.totalCost,
-      unit_cost: r.unitCost,
-      revenue: r.revenue,
-      profit: r.profit,
-      margin: r.margin,
+      results: { totalCost: r.totalCost, unitCost: r.unitCost, revenue: r.revenue, profit: r.profit, margin: r.margin },
     });
     if (error) {
       toast.error(t("common.error"));
@@ -127,8 +128,8 @@ function CalculatorPage() {
         {(history ?? []).map((h) => (
           <div key={h.id} className="glass-card flex items-center justify-between p-3 text-sm">
             <span className="text-[11px] text-muted-foreground">{formatDate(h.created_at, lang)}</span>
-            <span className={Number(h.profit) >= 0 ? "font-semibold text-success" : "font-semibold text-destructive"}>
-              {formatDzd(Number(h.profit), lang)} {t("common.dzd")}
+            <span className={profitOf(h.results) >= 0 ? "font-semibold text-success" : "font-semibold text-destructive"}>
+              {formatDzd(profitOf(h.results), lang)} {t("common.dzd")}
             </span>
           </div>
         ))}

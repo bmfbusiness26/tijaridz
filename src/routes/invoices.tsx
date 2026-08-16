@@ -65,7 +65,6 @@ function InvoicesPage() {
       description: description.trim(),
       amount: amountNum,
       tva_rate: tvaNum,
-      total,
     });
     setBusy(false);
     if (error) {
@@ -144,7 +143,7 @@ function InvoicesPage() {
                 </p>
               </div>
               <p className="font-extrabold text-primary">
-                {formatDzd(Number(inv.total), lang)} {t("common.dzd")}
+                {formatDzd(Number(inv.amount) * (1 + Number(inv.tva_rate) / 100), lang)} {t("common.dzd")}
               </p>
             </div>
             {inv.description ? <p className="text-xs text-muted-foreground">{inv.description}</p> : null}

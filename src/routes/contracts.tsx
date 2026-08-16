@@ -77,7 +77,10 @@ function ContractsPage() {
 
   async function remove(id: string) {
     const { error } = await supabase.from("contracts").delete().eq("id", id);
-    if (error) return toast.error(t("common.error"));
+    if (error) {
+      toast.error(t("common.error"));
+      return;
+    }
     void qc.invalidateQueries({ queryKey: ["contracts"] });
     void qc.invalidateQueries({ queryKey: ["overview"] });
   }

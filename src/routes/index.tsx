@@ -108,7 +108,7 @@ function HomePage() {
         })}
       </section>
 
-      <SecondaryNav isAdmin={data?.isAdmin} />
+      <SecondaryNav isAdmin={data?.isAdmin ?? false} />
     </AppShell>
   );
 }
