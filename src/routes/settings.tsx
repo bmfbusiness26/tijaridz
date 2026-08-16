@@ -25,7 +25,7 @@ export const Route = createFileRoute("/settings")({
 function SettingsPage() {
   const { t, lang, setLang } = useI18n();
   const { user } = useAuth();
-  const [form, setForm] = useState({ full_name: "", company_name: "", nif: "", phone: "", address: "" });
+  const [form, setForm] = useState({ full_name: "", company_name: "", company_nif: "", company_phone: "", company_address: "" });
   const [busy, setBusy] = useState(false);
 
   const { data: profile } = useQuery({
@@ -42,9 +42,9 @@ function SettingsPage() {
       setForm({
         full_name: profile.full_name ?? "",
         company_name: profile.company_name ?? "",
-        nif: profile.nif ?? "",
-        phone: profile.phone ?? "",
-        address: profile.address ?? "",
+        company_nif: profile.company_nif ?? "",
+        company_phone: profile.company_phone ?? "",
+        company_address: profile.company_address ?? "",
       });
     }
   }, [profile]);
@@ -60,9 +60,9 @@ function SettingsPage() {
   const fields = [
     ["full_name", "auth.name"],
     ["company_name", "settings.companyName"],
-    ["nif", "settings.nif"],
-    ["phone", "settings.phone"],
-    ["address", "settings.address"],
+    ["company_nif", "settings.nif"],
+    ["company_phone", "settings.phone"],
+    ["company_address", "settings.address"],
   ] as const;
 
   return (
