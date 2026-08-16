@@ -134,7 +134,10 @@ export const redeemActivationCode = createServerFn({ method: "POST" })
     return { plan: row.plan, expiresAt: expires.toISOString() };
   });
 
-async function assertAdmin(context: { supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown }> }; userId: string }) {
+async function assertAdmin(context: {
+  supabase: { rpc: (fn: "has_role", args: { _user_id: string; _role: "admin" }) => PromiseLike<{ data: boolean | null }> };
+  userId: string;
+}) {
   const { data } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
   if (data !== true) throw new Error("FORBIDDEN");
 }
