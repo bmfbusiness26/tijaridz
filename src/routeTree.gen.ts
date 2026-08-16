@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as ContractsRouteImport } from './routes/contracts'
+import { Route as InvoicesRouteImport } from './routes/invoices'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,40 +25,58 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContractsRoute = ContractsRouteImport.update({
   id: '/contracts',
   path: '/contracts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvoicesRoute = InvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/calculator': typeof CalculatorRoute
   '/contracts': typeof ContractsRoute
+  '/invoices': typeof InvoicesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/calculator': typeof CalculatorRoute
   '/contracts': typeof ContractsRoute
+  '/invoices': typeof InvoicesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/calculator': typeof CalculatorRoute
   '/contracts': typeof ContractsRoute
+  '/invoices': typeof InvoicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/contracts'
+  fullPaths: '/' | '/auth' | '/calculator' | '/contracts' | '/invoices'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/contracts'
-  id: '__root__' | '/' | '/auth' | '/contracts'
+  to: '/' | '/auth' | '/calculator' | '/contracts' | '/invoices'
+  id: '__root__' | '/' | '/auth' | '/calculator' | '/contracts' | '/invoices'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  CalculatorRoute: typeof CalculatorRoute
   ContractsRoute: typeof ContractsRoute
+  InvoicesRoute: typeof InvoicesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,11 +95,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contracts': {
       id: '/contracts'
       path: '/contracts'
       fullPath: '/contracts'
       preLoaderRoute: typeof ContractsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invoices': {
+      id: '/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof InvoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -88,7 +122,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  CalculatorRoute: CalculatorRoute,
   ContractsRoute: ContractsRoute,
+  InvoicesRoute: InvoicesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
