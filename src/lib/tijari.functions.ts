@@ -134,21 +134,15 @@ export const redeemActivationCode = createServerFn({ method: "POST" })
     return { plan: row.plan, expiresAt: expires.toISOString() };
   });
 
-type AdminCheckContext = {
-  supabase: {
-    from: (table: "user_roles") => {
-      select: (cols: string) => {
-        eq: (col: string, val: string) => {
-          eq: (col: string, val: string) => { maybeSingle: () => PromiseLike<{ data: unknown }> };
-        };
-      };
-    };
-  };
-  userId: string;
+type MinimalQuery = {
+  select: (cols: string) => MinimalQuery;
+  eq: (col: string, val: string) => MinimalQuery;
+  maybeSingle: () => PromiseLike<{ data: unknown }>;
 };
 
-async function assertAdmin(context: AdminCheckContext) {
-  const { data } = await context.supabase
+async function assertAdmin(context: { supabase: unknown; userId: string }) {
+  const client = context.supabase as { from: (table: string) => MinimalQuery };
+  const { data } = await client
     .from("user_roles")
     .select("role")
     .eq("user_id", context.userId)
