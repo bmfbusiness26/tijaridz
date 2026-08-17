@@ -15,6 +15,15 @@ export const getAccountOverview = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
+    const meta = (context.claims as { user_metadata?: Record<string, unknown> } | undefined)?.user_metadata ?? {};
+    await supabase.from("profiles").upsert(
+      {
+        id: userId,
+        full_name: (meta["full_name"] as string | undefined) ?? null,
+        phone: (meta["phone"] as string | undefined) ?? null,
+      },
+      { onConflict: "id", ignoreDuplicates: true },
+    );
     const [subRes, contractsRes, invoicesRes, calcRes, monthRes, roleRes] = await Promise.all([
       supabase
         .from("subscriptions")
