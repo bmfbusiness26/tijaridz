@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Sparkles } from "lucide-react";
+import { Store } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
@@ -89,7 +89,7 @@ function AuthPage() {
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-10">
       <div className="mb-8 text-center">
         <span className="mx-auto mb-3 flex size-16 items-center justify-center rounded-3xl bg-gradient-gold shadow-gold">
-          <Sparkles className="size-8 text-primary-foreground" />
+          <Store className="size-8 text-primary-foreground" />
         </span>
         <h1 className="text-3xl font-extrabold tracking-wide text-gradient-gold">{t("app.name")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t("auth.intro")}</p>

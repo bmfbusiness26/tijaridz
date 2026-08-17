@@ -9,6 +9,7 @@ import {
   Settings,
   Shield,
   Sparkles,
+  Store,
   Wrench,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -53,7 +54,7 @@ export function AppShell({
       <header className="mb-6 flex items-center justify-between gap-3">
         <Link to="/" className="flex items-center gap-3">
           <span className="flex size-11 items-center justify-center rounded-2xl bg-gradient-gold shadow-gold">
-            <Sparkles className="size-5 text-primary-foreground" />
+            <Store className="size-5 text-primary-foreground" />
           </span>
           <span className="flex flex-col leading-tight">
             <span className="text-xl font-extrabold tracking-wide text-gradient-gold">{t("app.name")}</span>
