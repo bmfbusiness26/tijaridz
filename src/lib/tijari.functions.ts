@@ -134,7 +134,20 @@ export const redeemActivationCode = createServerFn({ method: "POST" })
     return { plan: row.plan, expiresAt: expires.toISOString() };
   });
 
-async function assertAdmin(context: { supabase: SupabaseAuthedClient; userId: string }) {
+type AdminCheckContext = {
+  supabase: {
+    from: (table: "user_roles") => {
+      select: (cols: string) => {
+        eq: (col: string, val: string) => {
+          eq: (col: string, val: string) => { maybeSingle: () => PromiseLike<{ data: unknown }> };
+        };
+      };
+    };
+  };
+  userId: string;
+};
+
+async function assertAdmin(context: AdminCheckContext) {
   const { data } = await context.supabase
     .from("user_roles")
     .select("role")
