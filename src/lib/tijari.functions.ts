@@ -134,12 +134,14 @@ export const redeemActivationCode = createServerFn({ method: "POST" })
     return { plan: row.plan, expiresAt: expires.toISOString() };
   });
 
-async function assertAdmin(context: {
-  supabase: { rpc: (fn: "has_role", args: { _user_id: string; _role: "admin" }) => PromiseLike<{ data: boolean | null }> };
-  userId: string;
-}) {
-  const { data } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
-  if (data !== true) throw new Error("FORBIDDEN");
+async function assertAdmin(context: { supabase: SupabaseAuthedClient; userId: string }) {
+  const { data } = await context.supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", context.userId)
+    .eq("role", "admin")
+    .maybeSingle();
+  if (!data) throw new Error("FORBIDDEN");
 }
 
 export const adminOverview = createServerFn({ method: "POST" })
