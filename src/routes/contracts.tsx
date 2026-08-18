@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2, ShieldAlert, Trash2 } from "lucide-react";
+import { Languages, Loader2, Lock, ShieldAlert, Trash2 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,28 @@ const RISK_STYLES: Record<string, string> = {
   medium: "bg-warning/15 text-warning",
   high: "bg-destructive/15 text-destructive",
 };
+
+const CARD_FIELDS = [
+  ["parties", "contracts.parties"],
+  ["value", "contracts.value"],
+  ["payment", "contracts.payment"],
+  ["delivery", "contracts.delivery"],
+  ["flags", "contracts.flags"],
+] as const;
+
+function parseCard(analysis: string | null) {
+  if (!analysis) return null;
+  const out: Record<string, string> = {};
+  for (const [key] of CARD_FIELDS) {
+    const m = new RegExp(`^\\s*-?\\s*${key}\\s*:\\s*(.+)$`, "im").exec(analysis);
+    if (m?.[1]) out[key] = m[1].trim();
+  }
+  return Object.keys(out).length ? out : null;
+}
+
+function stripCard(analysis: string | null) {
+  return (analysis ?? "").replace(/^\s*-?\s*(parties|value|payment|delivery|flags)\s*:.*$/gim, "").trim();
+}
 
 function ContractsPage() {
   const { t, lang } = useI18n();
@@ -97,8 +119,14 @@ function ContractsPage() {
           <Label htmlFor="c-text">{t("contracts.text")}</Label>
           <Textarea id="c-text" rows={8} value={text} onChange={(e) => setText(e.target.value)} />
         </div>
+        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <Languages className="size-3 shrink-0" /> {t("contracts.langs")}
+        </p>
+        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <Lock className="size-3 shrink-0" /> {t("common.privacyNote")}
+        </p>
         <Button
-          className="w-full"
+          className="h-12 w-full"
           disabled={analyze.isPending || name.trim().length < 2 || text.trim().length < 80}
           onClick={() => analyze.mutate()}
         >
@@ -139,8 +167,23 @@ function ContractsPage() {
             </button>
             {openId === c.id ? (
               <div className="border-t border-border p-4">
+                {parseCard(c.analysis) ? (
+                  <div className="mb-4 space-y-2 rounded-xl bg-primary/8 p-3">
+                    <p className="text-xs font-bold text-primary">{t("contracts.summary")}</p>
+                    {CARD_FIELDS.map(([key, labelKey]) => {
+                      const value = parseCard(c.analysis)?.[key];
+                      if (!value) return null;
+                      return (
+                        <div key={key} className="text-[13px] leading-relaxed">
+                          <span className="font-semibold">{t(labelKey)}: </span>
+                          <span className="text-muted-foreground">{value}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : null}
                 <pre className="whitespace-pre-wrap break-words font-sans text-[13px] leading-relaxed text-foreground/90">
-                  {c.analysis}
+                  {stripCard(c.analysis)}
                 </pre>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Button size="sm" variant="outline" onClick={() => window.print()}>
