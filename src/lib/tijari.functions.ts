@@ -194,7 +194,7 @@ export const adminOverview = createServerFn({ method: "POST" })
 export const adminCreateCode = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) =>
-    z.object({ plan: z.enum(["trader", "importer", "enterprise"]), months: z.number().int().min(1).max(24) }).parse(input),
+    z.object({ plan: z.enum(["trader", "importer"]), months: z.number().int().min(1).max(24) }).parse(input),
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
@@ -221,7 +221,7 @@ export const adminReviewReceipt = createServerFn({ method: "POST" })
       .object({
         receiptId: z.string().uuid(),
         approve: z.boolean(),
-        months: z.number().int().min(1).max(24).default(1),
+        months: z.number().int().min(1).max(24).default(12),
         note: z.string().max(500).optional(),
       })
       .parse(input),

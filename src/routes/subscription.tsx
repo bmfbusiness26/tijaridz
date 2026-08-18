@@ -127,8 +127,8 @@ function SubscriptionPage() {
               </div>
               <p className="mt-1 text-[11px] text-muted-foreground">
                 {plan.monthlyContractLimit < 0 ? "تحاليل غير محدودة" : `${plan.monthlyContractLimit} تحاليل/شهر`} ·{" "}
-                {plan.invoiceLimit === null ? "فواتير غير محدودة" : `${plan.invoiceLimit} فواتير`} · {plan.months}{" "}
-                {lang === "ar" ? "أشهر" : "months"}
+                {plan.invoiceLimit === null ? "فواتير غير محدودة" : `${plan.invoiceLimit} فواتير`} ·{" "}
+                {lang === "ar" ? "اشتراك سنوي" : lang === "fr" ? "abonnement annuel" : "yearly plan"}
               </p>
               {active ? <Check className="mt-2 size-4 text-primary" /> : null}
             </button>
