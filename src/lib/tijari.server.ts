@@ -29,7 +29,7 @@ export function startOfMonthIso() {
 }
 
 export function planFromId(id: string): PlanId {
-  return (["free", "trader", "importer", "enterprise"] as PlanId[]).includes(id as PlanId) ? (id as PlanId) : "free";
+  return (["free", "trader", "importer"] as PlanId[]).includes(id as PlanId) ? (id as PlanId) : "free";
 }
 
 const SYSTEM_PROMPT = `أنت مستشار قانوني وتجاري خبير في عقود الاستيراد الدولية، متخصص في السوق الجزائري (الجمارك، البنك المركزي، التوطين البنكي، Incoterms).
