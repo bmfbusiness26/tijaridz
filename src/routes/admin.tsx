@@ -36,7 +36,7 @@ function AdminPage() {
   const reviewFn = useServerFn(adminReviewReceipt);
   const receiptUrlFn = useServerFn(getReceiptUrl);
   const [plan, setPlan] = useState<Exclude<PlanId, "free">>("trader");
-  const [months, setMonths] = useState("1");
+  const [months, setMonths] = useState("12");
 
   const { data, error } = useQuery({
     queryKey: ["admin-overview", user?.id],
@@ -46,7 +46,7 @@ function AdminPage() {
   });
 
   const createCode = useMutation({
-    mutationFn: () => createCodeFn({ data: { plan, months: Number(months) || 1 } }),
+    mutationFn: () => createCodeFn({ data: { plan, months: Number(months) || 12 } }),
     onSuccess: (r) => {
       void navigator.clipboard.writeText(r.code);
       toast.success(r.code);
@@ -57,7 +57,7 @@ function AdminPage() {
 
   const review = useMutation({
     mutationFn: (v: { receiptId: string; approve: boolean }) =>
-      reviewFn({ data: { receiptId: v.receiptId, approve: v.approve, months: 1 } }),
+      reviewFn({ data: { receiptId: v.receiptId, approve: v.approve, months: 12 } }),
     onSuccess: () => {
       toast.success(t("common.saved"));
       void qc.invalidateQueries({ queryKey: ["admin-overview"] });
@@ -138,7 +138,6 @@ function AdminPage() {
             >
               <option value="trader">trader</option>
               <option value="importer">importer</option>
-              <option value="enterprise">enterprise</option>
             </select>
             <Input className="w-20" inputMode="numeric" value={months} onChange={(e) => setMonths(e.target.value)} />
             <Button disabled={createCode.isPending} onClick={() => createCode.mutate()}>
