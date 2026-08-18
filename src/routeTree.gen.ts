@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as ContractsRouteImport } from './routes/contracts'
 import { Route as InvoicesRouteImport } from './routes/invoices'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SubscriptionRouteImport } from './routes/subscription'
 import { Route as ToolsRouteImport } from './routes/tools'
@@ -49,6 +50,11 @@ const InvoicesRoute = InvoicesRouteImport.update({
   path: '/invoices',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/calculator': typeof CalculatorRoute
   '/contracts': typeof ContractsRoute
   '/invoices': typeof InvoicesRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/subscription': typeof SubscriptionRoute
   '/tools': typeof ToolsRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/calculator': typeof CalculatorRoute
   '/contracts': typeof ContractsRoute
   '/invoices': typeof InvoicesRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/subscription': typeof SubscriptionRoute
   '/tools': typeof ToolsRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/calculator': typeof CalculatorRoute
   '/contracts': typeof ContractsRoute
   '/invoices': typeof InvoicesRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/subscription': typeof SubscriptionRoute
   '/tools': typeof ToolsRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/calculator'
     | '/contracts'
     | '/invoices'
+    | '/privacy'
     | '/settings'
     | '/subscription'
     | '/tools'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/calculator'
     | '/contracts'
     | '/invoices'
+    | '/privacy'
     | '/settings'
     | '/subscription'
     | '/tools'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/calculator'
     | '/contracts'
     | '/invoices'
+    | '/privacy'
     | '/settings'
     | '/subscription'
     | '/tools'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   CalculatorRoute: typeof CalculatorRoute
   ContractsRoute: typeof ContractsRoute
   InvoicesRoute: typeof InvoicesRoute
+  PrivacyRoute: typeof PrivacyRoute
   SettingsRoute: typeof SettingsRoute
   SubscriptionRoute: typeof SubscriptionRoute
   ToolsRoute: typeof ToolsRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InvoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   CalculatorRoute: CalculatorRoute,
   ContractsRoute: ContractsRoute,
   InvoicesRoute: InvoicesRoute,
+  PrivacyRoute: PrivacyRoute,
   SettingsRoute: SettingsRoute,
   SubscriptionRoute: SubscriptionRoute,
   ToolsRoute: ToolsRoute,

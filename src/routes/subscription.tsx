@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Check, Copy, Upload } from "lucide-react";
+import { Check, Copy, Lock, Upload } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -166,6 +166,9 @@ function SubscriptionPage() {
             if (file) void uploadReceipt(file);
           }}
         />
+        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <Lock className="size-3 shrink-0" /> {t("common.privacyNote")}
+        </p>
         <a
           href={`https://wa.me/${SUPPORT_WHATSAPP}`}
           target="_blank"
