@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect } from "react";
-import { Calculator, FileText, Receipt, Wrench } from "lucide-react";
+import { ArrowLeft, Calculator, FileText, Receipt, Wrench } from "lucide-react";
 import { AppShell, SecondaryNav } from "@/components/AppShell";
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
@@ -65,8 +65,24 @@ function HomePage() {
     { to: "/tools", icon: Wrench, title: t("home.toolsTitle"), desc: t("home.toolsDesc") },
   ] as const;
 
+  const isNew = (data?.counts.contracts ?? 0) === 0;
+
   return (
     <AppShell>
+      {isNew ? (
+        <section className="glass-card space-y-3 border-primary/40 p-5">
+          <p className="text-xs font-bold text-primary">{t("home.firstStep")}</p>
+          <h2 className="text-lg font-extrabold">{t("home.firstStepCta")}</h2>
+          <p className="text-sm leading-relaxed text-muted-foreground">{t("home.firstStepDesc")}</p>
+          <Link
+            to="/contracts"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-gold font-bold text-primary-foreground shadow-gold"
+          >
+            {t("home.firstStepCta")} <ArrowLeft className="size-4 rtl:rotate-0 ltr:rotate-180" />
+          </Link>
+        </section>
+      ) : null}
+
       <section className="glass-card flex items-center justify-between gap-3 p-4">
         <div>
           <p className="text-xs text-muted-foreground">{t("sub.current")}</p>

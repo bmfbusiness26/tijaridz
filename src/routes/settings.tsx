@@ -25,7 +25,15 @@ export const Route = createFileRoute("/settings")({
 function SettingsPage() {
   const { t, lang, setLang } = useI18n();
   const { user } = useAuth();
-  const [form, setForm] = useState({ full_name: "", company_name: "", company_nif: "", company_phone: "", company_address: "" });
+  const [form, setForm] = useState({
+    full_name: "",
+    company_name: "",
+    company_rc: "",
+    company_nif: "",
+    company_cnas: "",
+    company_phone: "",
+    company_address: "",
+  });
   const [busy, setBusy] = useState(false);
 
   const { data: profile } = useQuery({
@@ -42,7 +50,9 @@ function SettingsPage() {
       setForm({
         full_name: profile.full_name ?? "",
         company_name: profile.company_name ?? "",
+        company_rc: profile.company_rc ?? "",
         company_nif: profile.company_nif ?? "",
+        company_cnas: profile.company_cnas ?? "",
         company_phone: profile.company_phone ?? "",
         company_address: profile.company_address ?? "",
       });
@@ -60,7 +70,9 @@ function SettingsPage() {
   const fields = [
     ["full_name", "auth.name"],
     ["company_name", "settings.companyName"],
+    ["company_rc", "invoices.rc"],
     ["company_nif", "settings.nif"],
+    ["company_cnas", "invoices.cnas"],
     ["company_phone", "settings.phone"],
     ["company_address", "settings.address"],
   ] as const;
@@ -72,7 +84,12 @@ function SettingsPage() {
         {fields.map(([key, labelKey]) => (
           <div key={key} className="space-y-1.5">
             <Label htmlFor={key}>{t(labelKey)}</Label>
-            <Input id={key} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} />
+            <Input
+              id={key}
+              className="h-12 text-base"
+              value={form[key]}
+              onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+            />
           </div>
         ))}
         <Button className="w-full" disabled={busy} onClick={() => void save()}>
