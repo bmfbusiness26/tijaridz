@@ -136,6 +136,7 @@ export type Database = {
           created_at: string
           currency: string
           description: string
+          exchange_rate: number
           id: string
           invoice_date: string
           number: string
@@ -149,6 +150,7 @@ export type Database = {
           created_at?: string
           currency?: string
           description: string
+          exchange_rate?: number
           id?: string
           invoice_date?: string
           number: string
@@ -162,6 +164,7 @@ export type Database = {
           created_at?: string
           currency?: string
           description?: string
+          exchange_rate?: number
           id?: string
           invoice_date?: string
           number?: string
@@ -209,9 +212,11 @@ export type Database = {
       profiles: {
         Row: {
           company_address: string | null
+          company_cnas: string | null
           company_name: string | null
           company_nif: string | null
           company_phone: string | null
+          company_rc: string | null
           created_at: string
           full_name: string | null
           id: string
@@ -221,9 +226,11 @@ export type Database = {
         }
         Insert: {
           company_address?: string | null
+          company_cnas?: string | null
           company_name?: string | null
           company_nif?: string | null
           company_phone?: string | null
+          company_rc?: string | null
           created_at?: string
           full_name?: string | null
           id: string
@@ -233,9 +240,11 @@ export type Database = {
         }
         Update: {
           company_address?: string | null
+          company_cnas?: string | null
           company_name?: string | null
           company_nif?: string | null
           company_phone?: string | null
+          company_rc?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
