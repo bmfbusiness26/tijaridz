@@ -96,6 +96,12 @@ export function AppShell({
 
       <main className="flex-1 space-y-4">{children}</main>
 
+      <footer className="mt-8 pb-2 text-center text-[11px] text-muted-foreground">
+        <Link to="/privacy" className="underline hover:text-primary">
+          {t("common.privacy")}
+        </Link>
+      </footer>
+
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/85 backdrop-blur-lg">
         <div className="mx-auto flex max-w-2xl items-stretch justify-between px-2 py-1.5">
           {NAV.map((item) => {
