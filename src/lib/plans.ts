@@ -1,4 +1,4 @@
-export type PlanId = "free" | "trader" | "importer" | "enterprise";
+export type PlanId = "free" | "trader" | "importer";
 
 export type Plan = {
   id: PlanId;
@@ -23,8 +23,8 @@ export const PLANS: Record<PlanId, Plan> = {
   trader: {
     id: "trader",
     nameKey: "sub.trader",
-    priceDzd: 1500,
-    months: 1,
+    priceDzd: 15000,
+    months: 12,
     monthlyContractLimit: 10,
     invoiceLimit: null,
     featureKeys: ["10", "unlimited-invoices", "calc", "support"],
@@ -32,24 +32,15 @@ export const PLANS: Record<PlanId, Plan> = {
   importer: {
     id: "importer",
     nameKey: "sub.importer",
-    priceDzd: 3500,
-    months: 3,
-    monthlyContractLimit: -1,
-    invoiceLimit: null,
-    featureKeys: ["unlimited", "unlimited-invoices", "calc", "priority"],
-  },
-  enterprise: {
-    id: "enterprise",
-    nameKey: "sub.enterprise",
-    priceDzd: null,
+    priceDzd: 35000,
     months: 12,
     monthlyContractLimit: -1,
     invoiceLimit: null,
-    featureKeys: ["custom", "direct-support"],
+    featureKeys: ["unlimited", "unlimited-invoices", "calc", "priority"],
   },
 };
 
 export const RIP = "00799999002379242202";
 export const SUPPORT_WHATSAPP = "213675481854";
 
-export const PLAN_ORDER: PlanId[] = ["free", "trader", "importer", "enterprise"];
+export const PLAN_ORDER: PlanId[] = ["free", "trader", "importer"];
