@@ -77,6 +77,42 @@ export type Database = {
         }
         Relationships: []
       }
+      clients: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          nif: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          nif?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          nif?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contracts: {
         Row: {
           analysis: string | null
@@ -128,46 +164,85 @@ export type Database = {
         }
         Relationships: []
       }
+      invoice_counters: {
+        Row: {
+          last_seq: number
+          user_id: string
+          year: number
+        }
+        Insert: {
+          last_seq?: number
+          user_id: string
+          year: number
+        }
+        Update: {
+          last_seq?: number
+          user_id?: string
+          year?: number
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           amount: number
+          client_address: string | null
+          client_email: string | null
           client_name: string
           client_nif: string | null
+          client_phone: string | null
           created_at: string
           currency: string
           description: string
+          due_date: string | null
           exchange_rate: number
           id: string
           invoice_date: string
+          items: Json
+          notes: string | null
           number: string
+          status: string
           tva_rate: number
           user_id: string
         }
         Insert: {
           amount?: number
+          client_address?: string | null
+          client_email?: string | null
           client_name: string
           client_nif?: string | null
+          client_phone?: string | null
           created_at?: string
           currency?: string
           description: string
+          due_date?: string | null
           exchange_rate?: number
           id?: string
           invoice_date?: string
+          items?: Json
+          notes?: string | null
           number: string
+          status?: string
           tva_rate?: number
           user_id: string
         }
         Update: {
           amount?: number
+          client_address?: string | null
+          client_email?: string | null
           client_name?: string
           client_nif?: string | null
+          client_phone?: string | null
           created_at?: string
           currency?: string
           description?: string
+          due_date?: string | null
           exchange_rate?: number
           id?: string
           invoice_date?: string
+          items?: Json
+          notes?: string | null
           number?: string
+          status?: string
           tva_rate?: number
           user_id?: string
         }
@@ -213,6 +288,7 @@ export type Database = {
         Row: {
           company_address: string | null
           company_cnas: string | null
+          company_logo_url: string | null
           company_name: string | null
           company_nif: string | null
           company_phone: string | null
@@ -227,6 +303,7 @@ export type Database = {
         Insert: {
           company_address?: string | null
           company_cnas?: string | null
+          company_logo_url?: string | null
           company_name?: string | null
           company_nif?: string | null
           company_phone?: string | null
@@ -241,6 +318,7 @@ export type Database = {
         Update: {
           company_address?: string | null
           company_cnas?: string | null
+          company_logo_url?: string | null
           company_name?: string | null
           company_nif?: string | null
           company_phone?: string | null
@@ -320,6 +398,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      next_invoice_number: { Args: never; Returns: string }
     }
     Enums: {
       app_role: "admin" | "user"
