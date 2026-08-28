@@ -9,6 +9,14 @@ export function formatDate(value: string | Date, lang = "ar") {
   return new Intl.DateTimeFormat(locale, { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
 }
 
+export function escapeHtml(value: unknown): string {
+  const s = String(value ?? "");
+  return s.replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string,
+  );
+}
+
 export function toNumber(value: string | number | null | undefined) {
   const n = typeof value === "number" ? value : parseFloat(String(value ?? ""));
   return Number.isFinite(n) ? n : 0;

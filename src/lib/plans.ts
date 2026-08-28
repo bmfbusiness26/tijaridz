@@ -23,7 +23,7 @@ export const PLANS: Record<PlanId, Plan> = {
   trader: {
     id: "trader",
     nameKey: "sub.trader",
-    priceDzd: 15000,
+    priceDzd: 2000,
     months: 12,
     monthlyContractLimit: 10,
     invoiceLimit: null,
@@ -32,7 +32,7 @@ export const PLANS: Record<PlanId, Plan> = {
   importer: {
     id: "importer",
     nameKey: "sub.importer",
-    priceDzd: 35000,
+    priceDzd: 5000,
     months: 12,
     monthlyContractLimit: -1,
     invoiceLimit: null,
