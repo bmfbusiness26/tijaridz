@@ -26,6 +26,8 @@ export const Route = createFileRoute("/settings")({
 function SettingsPage() {
   const { t, lang, setLang } = useI18n();
   const { user } = useAuth();
+  const qc = useQueryClient();
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [form, setForm] = useState({
     full_name: "",
     company_name: "",
@@ -59,6 +61,33 @@ function SettingsPage() {
       });
     }
   }, [profile]);
+
+  async function uploadLogo(file: File) {
+    if (!user) return;
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error(t("inv.logoHint"));
+      return;
+    }
+    setUploadingLogo(true);
+    const path = `${user.id}/${Date.now()}-${file.name.replace(/[^\w.-]/g, "_")}`;
+    const { error: upErr } = await supabase.storage.from("logos").upload(path, file, { upsert: false });
+    if (upErr) {
+      setUploadingLogo(false);
+      toast.error(t("common.error"));
+      return;
+    }
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({ id: user.id, company_logo_url: path }, { onConflict: "id" });
+    setUploadingLogo(false);
+    if (error) {
+      toast.error(t("common.error"));
+      return;
+    }
+    toast.success(t("common.saved"));
+    void qc.invalidateQueries({ queryKey: ["profile"] });
+    void qc.invalidateQueries({ queryKey: ["logo"] });
+  }
 
   async function save() {
     if (!user) return;
