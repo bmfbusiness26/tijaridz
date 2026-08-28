@@ -11,7 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
-import { formatDate, formatDzd, toNumber } from "@/lib/format";
+import { escapeHtml, formatDate, formatDzd, toNumber } from "@/lib/format";
+import { useExchangeRates } from "@/hooks/useExchangeRates";
 
 export const Route = createFileRoute("/invoices")({
   head: () => ({
