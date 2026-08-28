@@ -40,7 +40,7 @@ type Profile = {
 const emptyItem = (tva = "19"): Item => ({ desc: "", qty: "1", price: "", tva });
 const todayIso = () => new Date().toISOString().slice(0, 10);
 const CURRENCIES = ["DZD", "EUR", "USD"];
-const DEFAULT_RATE: Record<string, string> = { DZD: "1", EUR: "245", USD: "228" };
+
 
 function itemTotals(items: Item[]) {
   let ht = 0;
@@ -57,6 +57,8 @@ function InvoicesPage() {
   const { t, lang } = useI18n();
   const { user } = useAuth();
   const qc = useQueryClient();
+  const { rates } = useExchangeRates();
+
 
   const [clientId, setClientId] = useState("");
   const [client, setClient] = useState("");
@@ -389,7 +391,7 @@ ${inv["notes"] ? `<p>${String(inv["notes"])}</p>` : ""}
             RC {profile?.company_rc ?? "—"} · NIF {profile?.company_nif ?? "—"} · CNAS {profile?.company_cnas ?? "—"}
           </p>
           <Link to="/settings" className="inline-block font-bold text-primary underline">
-            {t("inv.logo")} / {t("common.edit") !== "common.edit" ? t("common.edit") : t("invoices.completeProfile")}
+            {t("inv.logo")}
           </Link>
         </div>
       </section>
