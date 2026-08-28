@@ -48,6 +48,15 @@ function SettingsPage() {
     },
   });
 
+  const { data: logoUrl } = useQuery({
+    queryKey: ["logo", profile?.company_logo_url],
+    enabled: !!profile?.company_logo_url,
+    queryFn: async () => {
+      const { data } = await supabase.storage.from("logos").createSignedUrl(profile!.company_logo_url!, 3600);
+      return data?.signedUrl ?? null;
+    },
+  });
+
   useEffect(() => {
     if (profile) {
       setForm({
