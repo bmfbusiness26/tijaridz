@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Upload } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,8 @@ export const Route = createFileRoute("/settings")({
 function SettingsPage() {
   const { t, lang, setLang } = useI18n();
   const { user } = useAuth();
+  const qc = useQueryClient();
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [form, setForm] = useState({
     full_name: "",
     company_name: "",
@@ -45,6 +48,15 @@ function SettingsPage() {
     },
   });
 
+  const { data: logoUrl } = useQuery({
+    queryKey: ["logo", profile?.company_logo_url],
+    enabled: !!profile?.company_logo_url,
+    queryFn: async () => {
+      const { data } = await supabase.storage.from("logos").createSignedUrl(profile!.company_logo_url!, 3600);
+      return data?.signedUrl ?? null;
+    },
+  });
+
   useEffect(() => {
     if (profile) {
       setForm({
@@ -58,6 +70,33 @@ function SettingsPage() {
       });
     }
   }, [profile]);
+
+  async function uploadLogo(file: File) {
+    if (!user) return;
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error(t("inv.logoHint"));
+      return;
+    }
+    setUploadingLogo(true);
+    const path = `${user.id}/${Date.now()}-${file.name.replace(/[^\w.-]/g, "_")}`;
+    const { error: upErr } = await supabase.storage.from("logos").upload(path, file, { upsert: false });
+    if (upErr) {
+      setUploadingLogo(false);
+      toast.error(t("common.error"));
+      return;
+    }
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({ id: user.id, company_logo_url: path }, { onConflict: "id" });
+    setUploadingLogo(false);
+    if (error) {
+      toast.error(t("common.error"));
+      return;
+    }
+    toast.success(t("common.saved"));
+    void qc.invalidateQueries({ queryKey: ["profile"] });
+    void qc.invalidateQueries({ queryKey: ["logo"] });
+  }
 
   async function save() {
     if (!user) return;
@@ -95,6 +134,32 @@ function SettingsPage() {
         <Button className="w-full" disabled={busy} onClick={() => void save()}>
           {t("common.save")}
         </Button>
+      </section>
+
+      <section className="glass-card space-y-3 p-4">
+        <h2 className="font-bold">{t("inv.logo")}</h2>
+        {logoUrl ? (
+          <img src={logoUrl} alt={t("inv.logo")} className="size-20 rounded-lg border border-border object-contain" />
+        ) : null}
+        <Label
+          htmlFor="logo"
+          className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-primary/50 px-4 py-6 text-sm font-semibold text-primary"
+        >
+          <Upload className="size-4" />
+          {uploadingLogo ? t("common.loading") : t("inv.logoUpload")}
+        </Label>
+        <input
+          id="logo"
+          type="file"
+          accept="image/png,image/jpeg"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void uploadLogo(file);
+            e.target.value = "";
+          }}
+        />
+        <p className="text-[11px] text-muted-foreground">{t("inv.logoHint")}</p>
       </section>
 
       <section className="glass-card space-y-3 p-4">
