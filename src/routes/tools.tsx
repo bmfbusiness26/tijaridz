@@ -19,10 +19,7 @@ export const Route = createFileRoute("/tools")({
   component: ToolsPage,
 });
 
-const RATES: { code: string; official: number; market: number }[] = [
-  { code: "EUR", official: 145, market: 245 },
-  { code: "USD", official: 134, market: 228 },
-  { code: "CNY", official: 18.6, market: 32 },
+const LOCAL_RATES: { code: string; official: number; market: number }[] = [
   { code: "TRY", official: 3.9, market: 6.6 },
   { code: "AED", official: 36.5, market: 62 },
 ];
