@@ -137,6 +137,32 @@ function SettingsPage() {
       </section>
 
       <section className="glass-card space-y-3 p-4">
+        <h2 className="font-bold">{t("inv.logo")}</h2>
+        {logoUrl ? (
+          <img src={logoUrl} alt={t("inv.logo")} className="size-20 rounded-lg border border-border object-contain" />
+        ) : null}
+        <Label
+          htmlFor="logo"
+          className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-primary/50 px-4 py-6 text-sm font-semibold text-primary"
+        >
+          <Upload className="size-4" />
+          {uploadingLogo ? t("common.loading") : t("inv.logoUpload")}
+        </Label>
+        <input
+          id="logo"
+          type="file"
+          accept="image/png,image/jpeg"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void uploadLogo(file);
+            e.target.value = "";
+          }}
+        />
+        <p className="text-[11px] text-muted-foreground">{t("inv.logoHint")}</p>
+      </section>
+
+      <section className="glass-card space-y-3 p-4">
         <h2 className="font-bold">{t("settings.lang")}</h2>
         <div className="grid grid-cols-3 gap-2">
           {LANGS.map((l) => (
