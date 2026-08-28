@@ -45,6 +45,19 @@ function ToolsPage() {
   const [currency, setCurrency] = useState("EUR");
   const [goodsValue, setGoodsValue] = useState("");
   const [dutyKey, setDutyKey] = useState("final");
+  const { rates } = useExchangeRates();
+
+  const RATES = useMemo(
+    () => [
+      ...(["EUR", "USD", "CNY"] as const).map((code) => ({
+        code,
+        official: rates[code]!.official,
+        market: rates[code]!.market,
+      })),
+      ...LOCAL_RATES,
+    ],
+    [rates],
+  );
 
   const rate = RATES.find((r) => r.code === currency) ?? RATES[0]!;
   const amt = toNumber(amount);
