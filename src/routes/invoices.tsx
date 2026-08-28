@@ -540,7 +540,7 @@ ${inv["notes"] ? `<p>${String(inv["notes"])}</p>` : ""}
               value={currency}
               onChange={(e) => {
                 setCurrency(e.target.value);
-                setRate(DEFAULT_RATE[e.target.value] ?? "1");
+                setRate(rates[e.target.value] ? String(rates[e.target.value]!.market) : "1");
               }}
               className="h-12 w-full rounded-md border border-input bg-surface px-3 text-base"
             >
