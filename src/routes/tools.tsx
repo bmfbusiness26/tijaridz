@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useI18n } from "@/lib/i18n";
 import { formatDzd, toNumber } from "@/lib/format";
+import { useExchangeRates } from "@/hooks/useExchangeRates";
 
 export const Route = createFileRoute("/tools")({
   head: () => ({

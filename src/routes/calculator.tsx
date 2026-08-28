@@ -11,9 +11,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, formatDzd, toNumber } from "@/lib/format";
+import { useExchangeRates } from "@/hooks/useExchangeRates";
 
 const CURRENCIES = ["USD", "EUR", "CNY"] as const;
-const DEFAULT_RATES: Record<string, string> = { USD: "228", EUR: "245", CNY: "32" };
 
 const DEMO = {
   currency: "CNY",
@@ -47,10 +47,11 @@ function CalculatorPage() {
   const { t, lang } = useI18n();
   const { user } = useAuth();
   const qc = useQueryClient();
+  const { rates } = useExchangeRates();
   const [f, setF] = useState({
     currency: "EUR",
     unitPrice: "",
-    rate: DEFAULT_RATES["EUR"]!,
+    rate: String(rates["EUR"]!.market),
     qty: "",
     shipping: "",
     customs: "30",
@@ -157,7 +158,11 @@ function CalculatorPage() {
               id="currency"
               value={f.currency}
               onChange={(e) =>
-                setF({ ...f, currency: e.target.value, rate: DEFAULT_RATES[e.target.value] ?? f.rate })
+                setF({
+                  ...f,
+                  currency: e.target.value,
+                  rate: rates[e.target.value] ? String(rates[e.target.value]!.market) : f.rate,
+                })
               }
               className="h-12 w-full rounded-md border border-input bg-surface px-3 text-base"
             >
