@@ -330,26 +330,26 @@ function InvoicesPage() {
     const rows = (lines.length ? lines : [{ desc: String(inv["description"] ?? ""), qty: 1, price: ht, tva: Number(inv["tva_rate"] ?? 0) }])
       .map(
         (i) =>
-          `<tr><td>${i.desc}</td><td>${i.qty}</td><td>${formatDzd(i.price, lang)}</td><td>${i.tva}%</td><td>${formatDzd(i.qty * i.price, lang)}</td></tr>`,
+          `<tr><td>${escapeHtml(i.desc)}</td><td>${i.qty}</td><td>${formatDzd(i.price, lang)}</td><td>${i.tva}%</td><td>${formatDzd(i.qty * i.price, lang)}</td></tr>`,
       )
       .join("");
-    const html = `<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>${String(inv["number"])}</title>
+    const html = `<!doctype html><html dir="rtl"><head><meta charset="utf-8"><title>${escapeHtml(inv["number"])}</title>
 <style>body{font-family:system-ui,Arial;padding:24px;color:#111}table{width:100%;border-collapse:collapse;margin-top:16px}
 td,th{border:1px solid #ccc;padding:8px;font-size:13px;text-align:start}h1{font-size:20px}img{max-height:70px}
 .tot{margin-top:16px;font-size:14px}.tot div{display:flex;justify-content:space-between;padding:4px 0}</style></head><body>
-${logoUrl ? `<img src="${logoUrl}" alt="logo"/>` : ""}
-<h1>${profile?.company_name ?? ""}</h1>
-<p>${profile?.company_address ?? ""}<br/>RC ${profile?.company_rc ?? ""} · NIF ${profile?.company_nif ?? ""} · CNAS ${profile?.company_cnas ?? ""}</p>
+${logoUrl ? `<img src="${escapeHtml(logoUrl)}" alt="logo"/>` : ""}
+<h1>${escapeHtml(profile?.company_name ?? "")}</h1>
+<p>${escapeHtml(profile?.company_address ?? "")}<br/>RC ${escapeHtml(profile?.company_rc ?? "")} · NIF ${escapeHtml(profile?.company_nif ?? "")} · CNAS ${escapeHtml(profile?.company_cnas ?? "")}</p>
 <hr/>
-<p><b>${String(inv["number"])}</b> — ${String(inv["invoice_date"] ?? "")}${inv["due_date"] ? ` · ${t("inv.dueOn")}: ${String(inv["due_date"])}` : ""}</p>
-<p><b>${String(inv["client_name"] ?? "")}</b><br/>${String(inv["client_address"] ?? "")}<br/>${inv["client_nif"] ? `NIF ${String(inv["client_nif"])}` : ""}</p>
+<p><b>${escapeHtml(inv["number"])}</b> — ${escapeHtml(inv["invoice_date"] ?? "")}${inv["due_date"] ? ` · ${t("inv.dueOn")}: ${escapeHtml(inv["due_date"])}` : ""}</p>
+<p><b>${escapeHtml(inv["client_name"] ?? "")}</b><br/>${escapeHtml(inv["client_address"] ?? "")}<br/>${inv["client_nif"] ? `NIF ${escapeHtml(inv["client_nif"])}` : ""}</p>
 <table><thead><tr><th>${t("inv.itemDesc")}</th><th>${t("inv.qty")}</th><th>${t("inv.unitPrice")}</th><th>TVA</th><th>${t("inv.lineTotal")}</th></tr></thead><tbody>${rows}</tbody></table>
 <div class="tot">
 <div><span>${t("invoices.ht")}</span><span>${formatDzd(ht, lang)} ${cur}</span></div>
 <div><span>${t("invoices.tvaAmount")}</span><span>${formatDzd(tvaAmount, lang)} ${cur}</span></div>
 <div><b>${t("invoices.total")}</b><b>${formatDzd(ht + tvaAmount, lang)} ${cur}</b></div>
 </div>
-${inv["notes"] ? `<p>${String(inv["notes"])}</p>` : ""}
+${inv["notes"] ? `<p>${escapeHtml(inv["notes"])}</p>` : ""}
 </body></html>`;
     const w = window.open("", "_blank");
     if (!w) return;
